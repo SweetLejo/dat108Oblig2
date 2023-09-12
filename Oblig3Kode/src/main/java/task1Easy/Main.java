@@ -1,24 +1,22 @@
 package task1Easy;
 
 import javax.swing.*;
-import java.util.function.Predicate;
 
 public class Main {
     static String message = "";
-    static Predicate<String> wannaQuit = (a) -> a.equalsIgnoreCase("quit");
     public static void main(String[] args){
         new Thread(Main::getMessage).start();
         new Thread(Main::askForMessage).start();
     }
 
     public static void askForMessage(){
-        while (!wannaQuit.test(message)){
+        while (continues()){
             message = JOptionPane.showInputDialog("what do you wanna say?");
         }
     }
 
     public static void getMessage(){
-        while(!wannaQuit.test(message)){
+        while(continues()){
 
             try {
                 Thread.sleep(3_000);
@@ -28,6 +26,10 @@ public class Main {
 
             System.out.println(message);
         }
+    }
+
+    public static boolean continues(){
+        return !message.equalsIgnoreCase("quit");
     }
 
 }
