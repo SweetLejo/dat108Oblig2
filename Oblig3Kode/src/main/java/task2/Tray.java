@@ -43,9 +43,9 @@ public class Tray {
         burgers[current] = burger;
     }
 
-
-
-
+    public int getLength(){
+        return current;
+    }
 
 
 
