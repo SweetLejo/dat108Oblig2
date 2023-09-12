@@ -13,7 +13,7 @@ public class Main {
 
     public static void askForMessage(){
         while (!wannaQuit.test(message)){
-            message = JOptionPane.showInputDialog("hva vil du si?");
+            message = JOptionPane.showInputDialog("what do you wanna say?");
         }
     }
 
