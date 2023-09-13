@@ -1,50 +1,45 @@
 package task2;
 
+import java.util.LinkedList;
+
 public class Tray {
 
-    private Hamburger[] burgers;
-    public int current;
+    private LinkedList<Hamburger> burgers;
+    public int capacity;
 
-
-    public Tray(int capacity){
-        this.burgers = new Hamburger[capacity];
-        current = 0;
+    public Tray(int capacity) {
+        this.burgers = new LinkedList<>();
+        this.capacity = capacity;
     }
 
-    public Tray(){
-        int DEFAULT_CAPACITY = 4;
-        this.burgers = new Hamburger[DEFAULT_CAPACITY];
-        current = 0;
+    public Tray() {
+        this.burgers = new LinkedList<>();
+        this.capacity = 4;
+    }
+    public synchronized boolean isEmpty(){
+        return burgers.isEmpty();
     }
 
-    private boolean isEmpty(){
-        return current == 0;
-    }
-
-    private boolean isFull(){
-        return current == burgers.length;
+    public boolean isFull(){
+        return burgers.size() >= capacity;
     }
 
     public synchronized Hamburger getBurger(){
         if(isEmpty()){
             return null;
         }
-        Hamburger returner = burgers[current];
-        burgers[current] = null;
-        current--;
-        return returner;
+        return burgers.poll();
     }
 
     public synchronized void addBurger(Hamburger burger){
         if(isFull()){
             return;
         }
-        current++;
-        burgers[current] = burger;
+        burgers.offer(burger);
     }
 
     public int getLength(){
-        return current;
+        return burgers.size();
     }
 
 

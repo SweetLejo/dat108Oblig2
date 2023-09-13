@@ -18,14 +18,24 @@ public class Waiter implements Runnable {
         while(true){
 
             try {
-                Thread.sleep(3_000);
+                Thread.sleep(random.nextInt(2_000, 6_000));
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
 
+            synchronized (tray) {
+                while (tray.isEmpty()) {
+                    try {
+                        tray.wait();
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
 
-            Hamburger burger = tray.getBurger();
-            System.out.println(this.name + "(Waitor) took burger: " + burger.getId() + "current number of burgers: " + tray.getLength());
+                Hamburger burger = tray.getBurger();
+                tray.notifyAll();
+                System.out.println(this.name + " (Waitor) took burger: (id)  " + burger.getId() + " current number of burgers: " + tray.getLength());
+            }
         }
     }
 }

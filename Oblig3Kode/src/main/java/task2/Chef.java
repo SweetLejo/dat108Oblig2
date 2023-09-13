@@ -16,19 +16,30 @@ public class Chef implements Runnable{
     public void run(){
         Random random = new Random();
 
-        while(true){
-
+        while(true) {
             try {
-                Thread.sleep(3_000);
+                Thread.sleep(random.nextInt(2_000, 6_000));
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
+            synchronized (tray) {
+                while (tray.isFull()) {
+                    try {
+                        tray.wait();
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
 
-            Hamburger hamburger = new Hamburger();
-            tray.addBurger(hamburger);
-            System.out.println(this.name + "(chef) made a burger: " + hamburger.getId() + " current number of burgers: " + tray.getLength());
+
+                Hamburger hamburger = new Hamburger();
+                tray.addBurger(hamburger);
+                tray.notifyAll();
+                System.out.println(this.name + "(chef) made a burger (id): " + hamburger.getId() +
+                        " current number of burgers: " + tray.getLength());
+
+            }
         }
-
     }
 
 }

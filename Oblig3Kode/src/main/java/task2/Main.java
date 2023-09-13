@@ -7,8 +7,11 @@ public class Main {
 
     public static void main(String[] args) {
 
-        List<String> chefs = Arrays.asList("bob", "Lars");
-        List<String> waitors = Arrays.asList("Pelle", "Karl");
+
+        //wanna put the wait and notifyAll in the chef and waiter class not the tray class
+        //tray class gotta have syncronized methods to stop a race condition
+        List<String> chefs = Arrays.asList("Bob", "Lars");
+        List<String> waitors = Arrays.asList("Pelle");//, "Karl", "Peter");
         Tray tray = new Tray();
         chefs.stream()
                 .map(a -> new Thread( new Chef(a, tray)))
