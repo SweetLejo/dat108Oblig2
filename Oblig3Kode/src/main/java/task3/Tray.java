@@ -45,7 +45,7 @@ public class Tray {
     }
 
     public int getLength(){
-        return this.capacity;
+        return burgers.size();
     }
 
 
