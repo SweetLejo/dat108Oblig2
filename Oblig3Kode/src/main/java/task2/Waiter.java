@@ -23,19 +23,14 @@ public class Waiter implements Runnable {
                 throw new RuntimeException(e);
             }
 
-            synchronized (tray) {
-                while (tray.isEmpty()) {
-                    try {
-                        tray.wait();
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
 
-                Hamburger burger = tray.getBurger();
-                tray.notifyAll();
-                System.out.println(this.name + " (Waitor) took burger: (id)  " + burger.getId() + " current number of burgers: " + tray.getLength());
+            Hamburger burger = null;
+            try {
+                burger = tray.getBurger();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
             }
+            System.out.println(this.name + " (Waitor) took burger: (id)  " + burger.getId() + " current number of burgers: " + tray.getLength());
         }
     }
 }

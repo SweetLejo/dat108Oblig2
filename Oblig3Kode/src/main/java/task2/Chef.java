@@ -22,24 +22,17 @@ public class Chef implements Runnable{
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
-            synchronized (tray) {
-                while (tray.isFull()) {
-                    try {
-                        tray.wait();
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-
 
                 Hamburger hamburger = new Hamburger();
+            try {
                 tray.addBurger(hamburger);
-                tray.notifyAll();
-                System.out.println(this.name + "(chef) made a burger (id): " + hamburger.getId() +
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            System.out.println(this.name + "(chef) made a burger (id): " + hamburger.getId() +
                         " current number of burgers: " + tray.getLength());
 
             }
         }
     }
 
-}

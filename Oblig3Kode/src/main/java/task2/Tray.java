@@ -24,18 +24,33 @@ public class Tray {
         return burgers.size() >= capacity;
     }
 
-    public synchronized Hamburger getBurger(){
-        if(isEmpty()){
-            return null;
+    public synchronized Hamburger getBurger() throws InterruptedException {
+        while(isEmpty()){
+            try {
+                this.wait();
+            }catch(InterruptedException e){
+                Thread.currentThread().interrupt();
+            }
         }
-        return burgers.poll();
+
+            Hamburger returner = burgers.poll();
+            this.notifyAll();
+            return returner;
+
     }
 
-    public synchronized void addBurger(Hamburger burger){
-        if(isFull()){
-            return;
+    public synchronized void addBurger(Hamburger burger) throws InterruptedException {
+        while(isFull()){
+            try {
+                this.wait();
+            }catch(InterruptedException e){
+                Thread.currentThread().interrupt();
+            }
         }
+
+
         burgers.offer(burger);
+        this.notifyAll();
     }
 
     public int getLength(){
